@@ -15,4 +15,8 @@ public interface UserMapper {
      * @return
      */
     List<User> findAllUser();
+    void addDept(User user);
+    void updateDept(User user);
+    User findById(int id);
+    void deleteById(int id);
 }

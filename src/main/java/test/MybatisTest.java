@@ -1,17 +1,12 @@
 package test;
 
-import entity.User;
-import mapperInterface.UserMapper;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import dao.EmpDao;
+import entity.Emp;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -22,9 +17,17 @@ public class MybatisTest {
     @Test
     public void testConnect() throws IOException {
         ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        UserMapper userMapper = appContext.getBean("userMapper", UserMapper.class);
-        List<User> list = userMapper.findAllUser();
+
+        EmpDao empDao = appContext.getBean("empDao",EmpDao.class);
+        List<Emp> list = empDao.findAll();
         list.forEach(System.out::println);
+
+//        UserMapper userMapper = appContext.getBean("userMapper", UserMapper.class);
+//        User user = userMapper.findById(1);
+//        System.out.println(user);
+
+//        List<User> list = userMapper.findAllUser();
+//        list.forEach(System.out::println);
 
 //        String resource = "SqlMapConfig.xml";
 //        InputStream inputStream = Resources.getResourceAsStream(resource);
