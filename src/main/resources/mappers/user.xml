@@ -7,10 +7,10 @@
     select * from users
 </select>
     <select id="addUser" parameterType="entity.User">
-        insert into users(id,name,status) values(#{id},#{name},#{loc})
+        insert into users(id,name,status) values(#{id},#{name},#{status})
     </select>
     <update id="updateUser" parameterType="entity.User">
-        update users set name = #{name},loc = #{loc} where deptno = #{deptno}
+        update users set name = #{name},status = #{status} where id = #{id}
     </update>
     <select id="findById" parameterType="int" resultType="entity.User">
         select * from users where id = #{id}
