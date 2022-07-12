@@ -70,9 +70,11 @@
     </select>
 
 
+<!--    查询没有员工的部门-->
     <select id="">
 
-        select e.ename,d.department_id,d.location_id from t_emp e join departments d
+        select d.department_id from t_emp right join departments d on t_emp.department_id = d.department_id
+        group by d.department_id having count(t_emp.deptno) = 0
     </select>
     <select id="test" resultType="entity.Emp">
         select * from t_emp
