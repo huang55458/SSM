@@ -6,4 +6,78 @@
     <select id="findAll" resultType="entity.Emp">
         select * from t_emp
     </select>
+<!--    根据部门 id 查询员工信息-->
+    <select id="findByDept" parameterType="entity.Condition" resultType="entity.Emp">
+        select * from t_emp
+        <if test="deptno != null">where deptno = #{deptno}</if>
+    </select>
+<!--    根据不同工资 查询员工信息-->
+    <select id="findBySalary" parameterType="entity.Condition" resultType="entity.Emp">
+        select * from t_emp
+        <choose>
+            <when test="salary > 3000">
+                where sal > #{salary}
+            </when>
+            <otherwise>
+                where sal > 1500
+            </otherwise>
+        </choose>
+    </select>
+<!--    查询当前部门下，大于当前收入的员工-->
+    <select id="findByDeptAndSalary" parameterType="entity.Condition" resultType="entity.Emp">
+        select * from t_emp
+        <where>
+            <if test="deptno != null">
+                and deptno = #{deptno}
+            </if>
+            <if test="salary != null">
+                and sal > #{salary}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByDeptno" resultType="entity.Emp">
+        select ename,job from t_emp
+        <if test="num1 != null and num2 != null">
+            where deptno in (#{num1},#{num2})
+        </if>
+    </select>
+
+    <select id="findBymgr" parameterType="entity.Param" resultType="entity.Emp">
+        select ename,sal,mgr from t_emp where
+        <foreach collection="arr" index="index" item="item" open="mgr in (" separator="," close=")" nullable="true">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findBymgrTwo" parameterType="entity.Param" resultType="entity.Emp">
+        select * from t_emp
+        <where>
+            <choose>
+                <when test="num1 != 0">
+                    mgr = #{num1}
+                </when>
+                <otherwise>
+                    mgr is null
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="findBySal" parameterType="entity.Param" resultType="java.util.HashMap">
+        select e.ename,d.department_id,d.location_id from t_emp e left join departments d
+        on e.department_id = d.department_id and e.sal is not null
+    </select>
+
+
+    <select id="">
+
+        select e.ename,d.department_id,d.location_id from t_emp e join departments d
+    </select>
+    <select id="test" resultType="entity.Emp">
+        select * from t_emp
+        <if test="empno != null">
+            where empno in #{empno}
+        </if>
+    </select>
 </mapper>

@@ -8,9 +8,9 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
-<!--    <listener>-->
-<!--        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
-<!--    </listener>-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -25,6 +25,18 @@
         <url-pattern>*.form</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>encoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 <!--    <servlet>-->
 <!--        <servlet-name>test</servlet-name>-->
 <!--        <servlet-class>controller.TestController</servlet-class>-->

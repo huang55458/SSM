@@ -43,15 +43,15 @@
 
     <context:component-scan base-package="controller"/>
 
-    <bean id="helloController" class="controller.HelloController"/>
-    <bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings" ref="urlMapping"/>
-    </bean>
+<!--    <bean id="helloController" class="controller.HelloController"/>-->
+<!--    <bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">-->
+<!--        <property name="mappings" ref="urlMapping"/>-->
+<!--    </bean>-->
 
-    <util:properties id="urlMapping">
-        <prop key="/hello.form">helloController</prop>
-        <prop key="/test.form">helloController</prop>
-    </util:properties>
+<!--    <util:properties id="urlMapping">-->
+<!--        <prop key="/hello.form">helloController</prop>-->
+<!--        <prop key="/test.form">helloController</prop>-->
+<!--    </util:properties>-->
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
