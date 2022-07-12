@@ -1,7 +1,9 @@
 package test;
 
+import dao.DeptDao;
 import dao.EmpDao;
 import entity.Condition;
+import entity.Dept;
 import entity.Emp;
 import entity.Param;
 import org.junit.jupiter.api.Test;
@@ -105,7 +107,7 @@ public class MybatisTest {
     @Test
     public void testfindBySal() {
         ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        EmpDao empDao = appContext.getBean("empDao",EmpDao.class);
+        EmpDao empDao = appContext.getBean("empDao", EmpDao.class);
         List<HashMap<String, Object>> list = empDao.findBySal();
         for (HashMap<String, Object> h : list) {
             Set<Map.Entry<String, Object>> set = h.entrySet();
@@ -113,5 +115,67 @@ public class MybatisTest {
                 System.out.println(m.getKey() + ":" + m.getValue());
             }
         }
+    }
+
+    @Test
+    public void testUpdate() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        EmpDao empDao = appContext.getBean("empDao", EmpDao.class);
+
+        Emp emp = new Emp();
+        emp.setEmpno(7);
+        emp.setEname("ddd");
+        emp.setJob("bbb");
+
+        empDao.update(emp);
+    }
+
+    /**
+     * 测试没有自增的主键映射结果
+     */
+    @Test
+    public void testInsert() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        EmpDao empDao = appContext.getBean("empDao", EmpDao.class);
+
+        Emp emp = new Emp();
+        emp.setEname("Fdfdfdf");
+        emp.setMgr(5);
+        emp.setJob("bbb");
+        empDao.save(emp);
+        System.out.println(emp.getEname() + " - " + emp.getEmpno());
+    }
+
+    @Test
+    public void testfindByIdReo() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        EmpDao empDao = appContext.getBean("empDao", EmpDao.class);
+        Emp emp = empDao.findByIdReorm(2);
+        System.out.println(emp.getEname() + " - " + emp.getDept().getDname());
+
+    }
+
+    @Test
+    public void testfindByIdReo2() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        DeptDao deptDao = appContext.getBean("deptDao", DeptDao.class);
+        // 查询 部门号为 30 的部门信息
+        Dept dept = deptDao.findByIdReorm(30);
+        System.out.println("name: " + dept.getDname());
+        System.out.println("loc: " + dept.getLoc());
+        System.out.print("员工：");
+        List<Emp> list = dept.getEmps();
+        for (Emp e : list) {
+            System.out.print(e.getEname() + " 、 ");
+        }
+
+    }
+
+    @Test
+    public void testfindAll2() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        DeptDao deptDao = appContext.getBean("deptDao", DeptDao.class);
+        List<Dept> list = deptDao.findAll();
+        list.forEach(System.out::println);
     }
 }

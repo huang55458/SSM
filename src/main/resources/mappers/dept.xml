@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.DeptDao">
+    <select id="findByIdReorm" parameterType="java.lang.Integer" resultMap="deptMap">
+        select *
+        from t_dept
+        where deptno = #{id}
+    </select>
+    <select id="findDept" parameterType="java.lang.Integer" resultType="entity.Emp">
+        select *
+        from t_emp
+        where deptno = #{id}
+    </select>
+    <resultMap id="deptMap" type="entity.Dept">
+        <association property="emps" javaType="list" select="findDept" column="deptno"/>
+    </resultMap>
+
+
+    <select id="findAll" resultType="entity.Dept">
+        select *
+        from t_dept;
+    </select>
+</mapper>

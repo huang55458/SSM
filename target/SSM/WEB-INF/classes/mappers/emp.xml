@@ -35,6 +35,17 @@
             </if>
         </where>
     </select>
+    <select id="findByDeptAndSalary2" parameterType="entity.Condition" resultType="entity.Emp">
+        select * from t_emp
+        <trim prefix="WHERE" prefixOverrides="and | or">
+            <if test="deptno != null">
+                and deptno = #{deptno}
+            </if>
+            <if test="salary != null">
+                and sal > #{salary}
+            </if>
+        </trim>
+    </select>
 
     <select id="findByDeptno" resultType="entity.Emp">
         select ename,job from t_emp
@@ -70,14 +81,28 @@
     </select>
 
 
+<!--    查询没有员工的部门-->
     <select id="">
 
-        select e.ename,d.department_id,d.location_id from t_emp e join departments d
+        select d.department_id from t_emp right join departments d on t_emp.department_id = d.department_id
+        group by d.department_id having count(t_emp.deptno) = 0
     </select>
     <select id="test" resultType="entity.Emp">
-        select * from t_emp
-        <if test="empno != null">
-            where empno in #{empno}
-        </if>
+        <bind name="pattern" value="'%' + _parameter.getTitle() + '%'" />
+        SELECT * FROM t_emp
+        WHERE t_emp.ename LIKE #{pattern}
     </select>
+
+    <update id="update" parameterType="entity.Emp">
+        update t_emp
+            <set>
+                <if test="ename != null">
+                    ename = #{ename},
+                </if>
+                <if test="job != null">
+                    job = #{job}
+                </if>
+            </set>
+                where empno = #{empno}
+    </update>
 </mapper>

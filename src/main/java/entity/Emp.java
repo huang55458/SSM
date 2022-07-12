@@ -15,6 +15,17 @@ public class Emp {
     private double sal;
     private double comm;
     private int deptno;
+    // 关联属性
+    private Dept dept;
+
+    public Dept getDept() {
+        return dept;
+    }
+
+    public void setDept(Dept dept) {
+        this.dept = dept;
+    }
+
 
     public int getEmpno() {
         return empno;

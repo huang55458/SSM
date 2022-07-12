@@ -22,13 +22,21 @@ public interface EmpDao {
 
     List<Emp> findByDeptAndSalary(Condition condition);
 
+    List<Emp> findByDeptAndSalary2(Condition condition);
+
     List<Emp> findByDeptno(Param param);
 
     List<Emp> findBymgr(Param param);
 
     List<Emp> findBymgrTwo(Param param);
 
-    List<HashMap<String,Object>> findBySal();
+    List<HashMap<String, Object>> findBySal();
 
     List<Emp> test();
+
+    void update(Emp emp);
+
+    void save(Emp emp);
+
+    Emp findByIdReorm(int id);
 }
