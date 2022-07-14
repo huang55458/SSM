@@ -51,13 +51,20 @@
 <!--    <util:properties id="urlMapping">-->
 <!--        <prop key="/hello.form">helloController</prop>-->
 <!--        <prop key="/test.form">helloController</prop>-->
-<!--    </util:properties>-->
+    <!--    </util:properties>-->
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven/>
+
+    <bean id="operateLogger" class="aspect.OperateLogger"/>
+    <aop:config>
+        <aop:aspect ref="operateLogger">
+            <aop:before method="log1" pointcut="within(controller.EmpController*) "/>
+        </aop:aspect>
+    </aop:config>
 
 </beans>

@@ -1,6 +1,5 @@
 package dao;
 
-import annotation.MybatisRepository;
 import entity.Condition;
 import entity.Emp;
 import entity.Param;
@@ -12,7 +11,7 @@ import java.util.List;
  * @author chumeng
  * @date 2022/7/11 15:06
  */
-@MybatisRepository
+//@MybatisRepository
 public interface EmpDao {
     List<Emp> findAll();
 
@@ -39,4 +38,8 @@ public interface EmpDao {
     void save(Emp emp);
 
     Emp findByIdReorm(int id);
+
+    List<Emp> findByIdResultOrm(int id);
+
+
 }

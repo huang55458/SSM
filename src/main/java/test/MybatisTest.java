@@ -1,14 +1,16 @@
 package test;
 
+import dao.AnimalDao;
 import dao.DeptDao;
 import dao.EmpDao;
-import entity.Condition;
-import entity.Dept;
-import entity.Emp;
-import entity.Param;
+import dao.VehicleDao;
+import entity.*;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -150,8 +152,11 @@ public class MybatisTest {
     public void testfindByIdReo() {
         ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         EmpDao empDao = appContext.getBean("empDao", EmpDao.class);
-        Emp emp = empDao.findByIdReorm(2);
-        System.out.println(emp.getEname() + " - " + emp.getDept().getDname());
+        // 传入部门号，返回该部门内所有员工
+        List<Emp> emps = empDao.findByIdResultOrm(30);
+        for (Emp emp : emps) {
+            System.out.println(emp);
+        }
 
     }
 
@@ -177,5 +182,67 @@ public class MybatisTest {
         DeptDao deptDao = appContext.getBean("deptDao", DeptDao.class);
         List<Dept> list = deptDao.findAll();
         list.forEach(System.out::println);
+    }
+
+    @Test
+    public void testfindByIdResultOrm() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        DeptDao deptDao = appContext.getBean("deptDao", DeptDao.class);
+        // 查询 部门号为 30 的部门信息
+        Dept dept = deptDao.findByIdResultOrm(30);
+        System.out.println("deptno: " + dept.getDeptno());
+        System.out.println("name: " + dept.getDname());
+        System.out.println("loc: " + dept.getLoc());
+        System.out.print("员工：");
+        List<Emp> list = dept.getEmps();
+        for (Emp e : list) {
+            System.out.print(e.getEname() + " 、 ");
+        }
+        System.out.println();
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void tesefindAll3() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        VehicleDao vehicleDao = appContext.getBean("vehicleDao", VehicleDao.class);
+        List<Vehicle> list = vehicleDao.findAll();
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void tesefindAll4() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        AnimalDao animalDao = appContext.getBean("animalDao", AnimalDao.class);
+        List<Animal> list = animalDao.findAll();
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    public void testInsert2() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        SqlSessionFactory sqlSessionFactory = appContext.getBean("sqlSessionFactory", SqlSessionFactory.class);
+        SqlSession sqlSession = sqlSessionFactory.openSession(false);
+        Dept dept = new Dept();
+
+        dept.setDname("test");
+        dept.setLoc("test");
+        System.out.println(dept.getDeptno());
+        sqlSession.insert("dao.DeptDao.insert", dept);
+        System.out.println(dept.getDeptno());
+
+//        // 没有效果
+//        if (dept.getDeptno() == 80) {
+//            sqlSession.commit();
+//        } else {
+//            sqlSession.rollback();
+//            return;
+//        }
+        if (dept.getDeptno() != 80) {
+            System.out.println("1");
+            sqlSession.rollback(true);
+        }
+        sqlSession.close();
     }
 }

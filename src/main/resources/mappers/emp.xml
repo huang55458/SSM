@@ -131,4 +131,29 @@
 
         </association>
     </resultMap>
+
+    <select id="findByIdResultOrm" resultMap="deptMapResultOrm">
+        select *
+        from t_dept,
+             t_emp
+        where t_dept.deptno = t_emp.deptno
+          and t_emp.deptno = #{id}
+    </select>
+    <resultMap id="deptMapResultOrm" type="entity.Emp">
+        <id property="empno" column="empno"/>
+        <result property="ename" column="ename"/>
+        <result property="job" column="job"/>
+        <result property="mgr" column="mgr"/>
+        <result property="hiresdate" column="hiredate"/>
+        <result property="sal" column="sal"/>
+        <result property="deptno" column="deptno"/>
+        <result property="comm" column="comm"/>
+        <association property="dept" javaType="entity.Dept">
+            <id property="deptno" column="deptno"/>
+            <result property="dname" column="dname"/>
+            <result property="loc" column="loc"/>
+        </association>
+    </resultMap>
+
+
 </mapper>

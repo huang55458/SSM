@@ -22,4 +22,37 @@
         select *
         from t_dept;
     </select>
+
+    <!--    嵌套结果映射-->
+    <select id="findByIdResultOrm" resultMap="deptMapResultOrm">
+        select *
+        from t_dept,
+             t_emp
+        where t_dept.deptno = t_emp.deptno
+          and t_dept.deptno = #{id}
+    </select>
+    <resultMap id="deptMapResultOrm" type="entity.Dept">
+        <id property="deptno" column="deptno"/>
+        <result property="dname" column="dname"/>
+        <result property="loc" column="loc"/>
+
+        <collection property="emps" ofType="entity.Emp">
+            <id property="empno" column="empno"/>
+            <result property="ename" column="ename"/>
+            <result property="job" column="job"/>
+            <result property="mgr" column="mgr"/>
+            <result property="hiresdate" column="hiredate"/>
+            <result property="sal" column="sal"/>
+            <result property="deptno" column="deptno"/>
+            <result property="comm" column="comm"/>
+        </collection>
+        <!--        <association property="emps" javaType="list">-->
+        <!--            -->
+        <!--        </association>-->
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="deptno" parameterType="entity.Dept">
+        INSERT INTO java220201.t_dept (dname, loc)
+        VALUES (#{dname}, #{loc});
+    </insert>
 </mapper>
